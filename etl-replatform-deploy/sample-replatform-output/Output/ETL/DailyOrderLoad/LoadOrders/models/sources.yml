@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: contoso_oltp
+    description: "Source: Contoso OLTP database (SQL Server via SnowConvert)"
+    database: "<database>"
+    schema: dbo
+    tables:
+      - name: orders
+        description: "Sales orders header table"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - unique
+          - name: customer_id
+          - name: order_date
+          - name: total_amount
+
+      - name: order_details
+        description: "Sales order line items"
+        columns:
+          - name: order_detail_id
+            tests:
+              - not_null
+          - name: order_id
+          - name: product_id
+          - name: quantity
+          - name: unit_price

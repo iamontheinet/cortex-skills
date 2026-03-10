@@ -1,0 +1,17 @@
+name: 'GenerateReport'
+version: '1.0.0'
+config-version: 2
+
+profile: 'contoso_retail'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  report_month: '2024-01'
+  output_format: PARQUET

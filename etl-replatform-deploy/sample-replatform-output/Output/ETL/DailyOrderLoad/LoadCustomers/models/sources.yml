@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: contoso_oltp
+    description: "Source: Contoso OLTP customer data"
+    database: "<database>"
+    schema: dbo
+    tables:
+      - name: customers
+        description: "Customer master data"
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+          - name: customer_name
+          - name: email
+          - name: region

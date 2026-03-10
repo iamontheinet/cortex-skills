@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: contoso_oltp
+    description: "Source: Contoso OLTP audit log data"
+    database: "<database>"
+    schema: dbo
+    tables:
+      - name: audit_log
+        description: "Audit log events"
+        columns:
+          - name: audit_id
+          - name: event_type
+          - name: event_timestamp
+          - name: user_name
+          - name: details

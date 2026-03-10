@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: contoso_dw
+    description: "Source: Contoso Data Warehouse - fact tables for reporting"
+    database: "<database>"
+    schema: analytics
+    tables:
+      - name: fct_daily_orders
+        description: "Daily order aggregates (output of DailyOrderLoad)"
+        columns:
+          - name: order_date
+            tests:
+              - not_null
+          - name: total_orders
+          - name: unique_customers
+          - name: gross_revenue
+          - name: avg_order_value
+          - name: _loaded_at
+
+      - name: dim_inventory
+        description: "Inventory dimension (output of WeeklyInventorySync)"
+        columns:
+          - name: product_id
+            tests:
+              - not_null
+          - name: stock_status

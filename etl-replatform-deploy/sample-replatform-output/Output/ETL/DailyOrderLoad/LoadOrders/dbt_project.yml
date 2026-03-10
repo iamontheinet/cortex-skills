@@ -1,0 +1,18 @@
+name: 'LoadOrders'
+version: '1.0.0'
+config-version: 2
+
+profile: 'contoso_retail'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  source_database: CONTOSO_OLTP
+  source_schema: dbo

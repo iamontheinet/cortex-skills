@@ -1,0 +1,12 @@
+contoso_retail:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<account>"
+      user: "<user>"
+      role: "<role>"
+      warehouse: "<warehouse>"
+      database: "<database>"
+      schema: "<schema>"
+      threads: 4

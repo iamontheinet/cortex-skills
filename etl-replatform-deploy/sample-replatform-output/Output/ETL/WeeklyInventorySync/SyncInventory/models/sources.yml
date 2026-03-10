@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: contoso_wms
+    description: "Source: Contoso Warehouse Management System"
+    database: "<database>"
+    schema: warehouse
+    tables:
+      - name: inventory_levels
+        description: "Current inventory levels by product and warehouse"
+        columns:
+          - name: product_id
+            tests:
+              - not_null
+          - name: warehouse_code
+          - name: quantity_on_hand
+          - name: last_counted_date

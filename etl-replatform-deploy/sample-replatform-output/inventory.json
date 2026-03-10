@@ -1,0 +1,265 @@
+{
+  "etl_output_dir": "/Users/ddesai/sample-replatform-output/Output/ETL",
+  "scan_timestamp": "2026-03-10T17:24:58.632710+00:00",
+  "etl_config_components": [
+    {
+      "name": "control_variables_table",
+      "category": "table",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/tables/control_variables_table.sql",
+      "deploy_status": "PENDING"
+    },
+    {
+      "name": "GetControlVariableUDF",
+      "category": "function",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/functions/GetControlVariableUDF.sql",
+      "deploy_status": "PENDING"
+    },
+    {
+      "name": "UpdateControlVariable",
+      "category": "procedure",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/procedures/UpdateControlVariable.sql",
+      "deploy_status": "PENDING"
+    }
+  ],
+  "packages": [
+    {
+      "name": "DailyOrderLoad",
+      "path": "/Users/ddesai/sample-replatform-output/Output/ETL/DailyOrderLoad",
+      "orchestration_file": "/Users/ddesai/sample-replatform-output/Output/ETL/DailyOrderLoad/DailyOrderLoad.sql",
+      "orchestration_type": "TASK",
+      "dbt_projects": [
+        {
+          "name": "LoadCustomers",
+          "folder_name": "LoadCustomers",
+          "path": "/Users/ddesai/sample-replatform-output/Output/ETL/DailyOrderLoad/LoadCustomers",
+          "package_name": "DailyOrderLoad",
+          "has_dbt_project_yml": true,
+          "has_profiles_yml": true,
+          "has_sources_yml": true,
+          "dbt_project_name": "LoadCustomers",
+          "model_count": 1,
+          "staging_models": [
+            "stg_raw__customers"
+          ],
+          "intermediate_models": [],
+          "mart_models": [],
+          "macro_count": 1,
+          "test_count": 0,
+          "deploy_status": "PENDING"
+        },
+        {
+          "name": "LoadOrders",
+          "folder_name": "LoadOrders",
+          "path": "/Users/ddesai/sample-replatform-output/Output/ETL/DailyOrderLoad/LoadOrders",
+          "package_name": "DailyOrderLoad",
+          "has_dbt_project_yml": true,
+          "has_profiles_yml": true,
+          "has_sources_yml": true,
+          "dbt_project_name": "LoadOrders",
+          "model_count": 4,
+          "staging_models": [
+            "stg_raw__orders",
+            "stg_raw__order_details"
+          ],
+          "intermediate_models": [
+            "int_orders_enriched"
+          ],
+          "mart_models": [
+            "fct_daily_orders"
+          ],
+          "macro_count": 1,
+          "test_count": 1,
+          "deploy_status": "PENDING"
+        }
+      ],
+      "execute_dbt_project_refs": [
+        "LoadOrders",
+        "LoadCustomers"
+      ],
+      "task_names": [
+        "DailyOrderLoad_root",
+        "DailyOrderLoad_LoadOrders",
+        "DailyOrderLoad_LoadCustomers"
+      ],
+      "has_script_sql": true,
+      "deploy_status": "PENDING"
+    },
+    {
+      "name": "MonthlyReportGen",
+      "path": "/Users/ddesai/sample-replatform-output/Output/ETL/MonthlyReportGen",
+      "orchestration_file": "/Users/ddesai/sample-replatform-output/Output/ETL/MonthlyReportGen/MonthlyReportGen.sql",
+      "orchestration_type": "TASK",
+      "dbt_projects": [
+        {
+          "name": "GenerateReport",
+          "folder_name": "GenerateReport",
+          "path": "/Users/ddesai/sample-replatform-output/Output/ETL/MonthlyReportGen/GenerateReport",
+          "package_name": "MonthlyReportGen",
+          "has_dbt_project_yml": true,
+          "has_profiles_yml": true,
+          "has_sources_yml": true,
+          "dbt_project_name": "GenerateReport",
+          "model_count": 2,
+          "staging_models": [
+            "stg_raw__transactions"
+          ],
+          "intermediate_models": [],
+          "mart_models": [
+            "rpt_monthly_summary"
+          ],
+          "macro_count": 1,
+          "test_count": 0,
+          "deploy_status": "PENDING"
+        }
+      ],
+      "execute_dbt_project_refs": [
+        "GenerateReport",
+        "ArchiveData"
+      ],
+      "task_names": [
+        "MonthlyReportGen_root",
+        "MonthlyReportGen_GenerateReport",
+        "orphan_archive_task"
+      ],
+      "has_script_sql": false,
+      "deploy_status": "PENDING"
+    },
+    {
+      "name": "WeeklyInventorySync",
+      "path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync",
+      "orchestration_file": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/WeeklyInventorySync.sql",
+      "orchestration_type": "PROCEDURE",
+      "dbt_projects": [
+        {
+          "name": "AuditLog",
+          "folder_name": "AuditLog",
+          "path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/AuditLog",
+          "package_name": "WeeklyInventorySync",
+          "has_dbt_project_yml": true,
+          "has_profiles_yml": false,
+          "has_sources_yml": false,
+          "dbt_project_name": "AuditLog",
+          "model_count": 1,
+          "staging_models": [
+            "stg_raw__audit"
+          ],
+          "intermediate_models": [],
+          "mart_models": [],
+          "macro_count": 0,
+          "test_count": 0,
+          "deploy_status": "PENDING"
+        },
+        {
+          "name": "SyncInventory",
+          "folder_name": "SyncInventory",
+          "path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/SyncInventory",
+          "package_name": "WeeklyInventorySync",
+          "has_dbt_project_yml": true,
+          "has_profiles_yml": true,
+          "has_sources_yml": true,
+          "dbt_project_name": "inventory_sync",
+          "model_count": 2,
+          "staging_models": [
+            "stg_raw__inventory"
+          ],
+          "intermediate_models": [],
+          "mart_models": [
+            "dim_inventory"
+          ],
+          "macro_count": 1,
+          "test_count": 0,
+          "deploy_status": "PENDING"
+        }
+      ],
+      "execute_dbt_project_refs": [
+        "SyncInventory",
+        "AuditLog"
+      ],
+      "task_names": [],
+      "has_script_sql": false,
+      "deploy_status": "PENDING"
+    }
+  ],
+  "validation_issues": [
+    {
+      "severity": "ERROR",
+      "category": "PLACEHOLDER",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/DailyOrderLoad/LoadCustomers/models/sources.yml",
+      "problem": "Placeholder values found: Line 6: database: <database>",
+      "suggested_fix": "Replace placeholder values with actual database/schema/connection details."
+    },
+    {
+      "severity": "WARNING",
+      "category": "ORPHAN_TASK",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/MonthlyReportGen/MonthlyReportGen.sql",
+      "problem": "Task 'orphan_archive_task' has no AFTER dependency and may not be the root task",
+      "suggested_fix": "Review the task DAG to ensure all tasks are properly chained."
+    },
+    {
+      "severity": "WARNING",
+      "category": "MISSING_FILE",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/AuditLog/models/sources.yml",
+      "problem": "sources.yml not found in dbt project 'AuditLog'",
+      "suggested_fix": "Create a sources.yml with the correct database/schema references."
+    },
+    {
+      "severity": "ERROR",
+      "category": "NAME_MISMATCH",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/SyncInventory/dbt_project.yml",
+      "problem": "dbt_project.yml name 'inventory_sync' does not match folder name 'SyncInventory'",
+      "suggested_fix": "Update the 'name' field in dbt_project.yml to 'SyncInventory' (required for EXECUTE DBT PROJECT to work correctly)."
+    },
+    {
+      "severity": "ERROR",
+      "category": "PLACEHOLDER",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/SyncInventory/profiles.yml",
+      "problem": "Placeholder values found: Line 6: account: <your_account>",
+      "suggested_fix": "Replace placeholder values with actual database/schema/connection details."
+    },
+    {
+      "severity": "ERROR",
+      "category": "DANGLING_REF",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/MonthlyReportGen/MonthlyReportGen.sql",
+      "problem": "EXECUTE DBT PROJECT references 'ArchiveData' but no matching dbt project folder found",
+      "suggested_fix": "Ensure a dbt project with name 'ArchiveData' exists, or update the orchestration SQL to use the correct project name."
+    },
+    {
+      "severity": "INFO",
+      "category": "SCHEMA_MISMATCH",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/tables/control_variables_table.sql",
+      "problem": "Hardcoded 'public' schema references found: public.control_variables",
+      "suggested_fix": "If deploying to a schema other than 'public', update these references to match the target schema."
+    },
+    {
+      "severity": "INFO",
+      "category": "SCHEMA_MISMATCH",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/functions/GetControlVariableUDF.sql",
+      "problem": "Hardcoded 'public' schema references found: public.control_variables",
+      "suggested_fix": "If deploying to a schema other than 'public', update these references to match the target schema."
+    },
+    {
+      "severity": "INFO",
+      "category": "SCHEMA_MISMATCH",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/etl_configuration/procedures/UpdateControlVariable.sql",
+      "problem": "Hardcoded 'public' schema references found: public.control_variables",
+      "suggested_fix": "If deploying to a schema other than 'public', update these references to match the target schema."
+    },
+    {
+      "severity": "WARNING",
+      "category": "MISSING_FILE",
+      "file_path": "/Users/ddesai/sample-replatform-output/Output/ETL/WeeklyInventorySync/AuditLog",
+      "problem": "profiles.yml missing in dbt project 'AuditLog'",
+      "suggested_fix": "Create a profiles.yml with your Snowflake connection details, or configure the connection via environment variables."
+    }
+  ],
+  "summary": {
+    "total_packages": 3,
+    "total_dbt_projects": 5,
+    "task_based_count": 2,
+    "procedure_based_count": 1,
+    "etl_config_count": 3,
+    "issue_count": 10,
+    "error_count": 4,
+    "warning_count": 3
+  }
+}
