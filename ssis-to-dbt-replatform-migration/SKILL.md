@@ -1,6 +1,6 @@
 ---
-name: etl-replatform-deploy
-description: Validates, deploys, and operationalizes SnowConvert AI Replatform output (SSIS-to-dbt + Snowflake TASKs). Use when user has SnowConvert Replatform output, converted SSIS packages, deploy dbt projects, deploy orchestration, validate replatform, deploy converted ETL, replatform deploy, SSIS to dbt deploy.
+name: ssis-to-dbt-replatform-migration
+description: Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations. Use when user has SnowConvert Replatform output, converted SSIS packages, deploy dbt projects, deploy orchestration, validate replatform, deploy converted ETL, replatform deploy, SSIS to dbt deploy, SCAI replatform.
 ---
 
 # ETL Replatform Deploy

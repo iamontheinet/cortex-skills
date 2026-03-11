@@ -1,4 +1,4 @@
-# ETL Replatform Deploy
+# SSIS to dbt Replatform Migration
 
 A [Cortex Code](https://docs.snowflake.com/en/user-guide/cortex-code/cortex-code) skill that validates, deploys, and operationalizes **SnowConvert AI Replatform** output — specifically SSIS packages converted to dbt projects and Snowflake TASKs.
 
@@ -64,7 +64,7 @@ The scanner catches common issues in SnowConvert output before they become deplo
 This skill is invoked automatically by Cortex Code when you mention deploying SnowConvert Replatform output. You can also invoke it directly:
 
 ```
-$etl-replatform-deploy
+$ssis-to-dbt-replatform-migration
 ```
 
 The scanner CLI can also be used standalone:
@@ -98,7 +98,7 @@ uv run --project <skill-dir> python -m replatform_scanner issues <inventory.json
   Output/ETL/ directory
          |
          v
-  etl-replatform-deploy skill  ──>  THIS SKILL
+  ssis-to-dbt-replatform-migration skill  ──>  THIS SKILL
          |                          (validate, deploy, smoke test)
          v
   Deployed Snowflake objects
@@ -125,7 +125,7 @@ See [`sample-replatform-output/README.md`](sample-replatform-output/README.md) f
 ## Project Structure
 
 ```
-etl-replatform-deploy/
+ssis-to-dbt-replatform-migration/
   SKILL.md                          # Skill definition (loaded by Cortex Code)
   pyproject.toml                    # Python project config
   uv.lock                          # Dependency lockfile

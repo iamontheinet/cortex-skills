@@ -1,6 +1,6 @@
 # Sample Replatform Output
 
-A realistic SnowConvert AI Replatform output directory for testing the `etl-replatform-deploy` skill. Modeled after the official [ETL Migration documentation](https://docs.snowflake.com/en/migrations/snowconvert-docs/general/user-guide/etl-migration-replatform#output-structure).
+A realistic SnowConvert AI Replatform output directory for testing the `ssis-to-dbt-replatform-migration` skill. Modeled after the official [ETL Migration documentation](https://docs.snowflake.com/en/migrations/snowconvert-docs/general/user-guide/etl-migration-replatform#output-structure).
 
 ## What's Inside
 
