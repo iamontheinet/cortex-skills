@@ -1,6 +1,0 @@
-streaming_key.p8
-streaming_key.pub
-target/
-*.class
-.idea/
-*.iml
