@@ -108,6 +108,20 @@ uv run --project <skill-dir> python -m replatform_scanner issues <inventory.json
   (ongoing management, scheduling, monitoring)
 ```
 
+## Sample Replatform Output
+
+The `sample-replatform-output/` directory contains a realistic SnowConvert AI Replatform output for testing — 3 SSIS packages, 5 dbt projects, both orchestration patterns, and intentional issues for the validator to catch. Modeled after the official [ETL Migration documentation](https://docs.snowflake.com/en/migrations/snowconvert-docs/general/user-guide/etl-migration-replatform#output-structure).
+
+Seed CSVs are excluded from the repo. To generate them:
+
+```bash
+cd sample-replatform-output
+python generate_seeds.py          # 10K customers, 50K orders, etc.
+python generate_seeds.py --scale 10  # 10x for stress testing
+```
+
+See [`sample-replatform-output/README.md`](sample-replatform-output/README.md) for details.
+
 ## Project Structure
 
 ```
@@ -130,4 +144,7 @@ etl-replatform-deploy/
   tests/
     conftest.py                     # Test fixtures
     test_scanner.py                 # 69 tests covering all validator checks
+  sample-replatform-output/         # Test artifact (see above)
+    generate_seeds.py               # Deterministic seed CSV generator
+    Output/ETL/                     # 3 packages, 5 dbt projects, etl_configuration
 ```
