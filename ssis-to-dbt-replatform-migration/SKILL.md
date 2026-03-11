@@ -1,6 +1,6 @@
 ---
 name: ssis-to-dbt-replatform-migration
-description: Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations. Use when user has SnowConvert Replatform output, converted SSIS packages, deploy dbt projects, deploy orchestration, validate replatform, deploy converted ETL, replatform deploy, SSIS to dbt deploy, SCAI replatform.
+description: Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations. Use when user has SnowConvert Replatform output, converted SSIS packages, deploy dbt projects, deploy orchestration, validate replatform, deploy converted ETL, replatform deploy, SSIS to dbt deploy, SCAI replatform, SSIS migration, convert SSIS, migrate ETL, SnowConvert output, replatform output, dtsx migration, ETL to Snowflake.
 ---
 
 # ETL Replatform Deploy
@@ -88,7 +88,7 @@ Phase 3: Deploy
 
 **Goal:** Explain what this skill does and get explicit user approval before executing anything.
 
-**MANDATORY: This phase MUST be completed before ANY other action.** Do not run any commands, read any files, or execute any tools until the user approves.
+**✋ MANDATORY: This phase MUST be completed before ANY other action.** Do not run any commands, read any files, or execute any tools until the user approves.
 
 **Load** `references/phase0-briefing.md` and present its content to the user using `ask_user_question`.
 
@@ -98,7 +98,7 @@ Options:
 - **Yes, proceed** — Continue to Phase 1
 - **No, stop here** — End the workflow; explain they can run the CLI commands manually
 
-**MANDATORY STOPPING POINT:** Do NOT proceed until the user selects "Yes, proceed".
+**⚠️ STOP:** Do NOT proceed until the user selects "Yes, proceed".
 
 ---
 
@@ -124,7 +124,7 @@ uv run --project <SKILL_DIR> python -m replatform_scanner summary <INVENTORY_JSO
 
 Present summary (packages, dbt projects, orchestration types, etl_configuration components, validation issues). Ask: **Proceed to Phase 2?**
 
-**MANDATORY STOPPING POINT:** Wait for user confirmation.
+**⚠️ STOP:** Wait for user confirmation before proceeding to Phase 2.
 
 ---
 
@@ -148,7 +148,7 @@ For each issue: show severity, category, file, problem, suggested fix. Ask: **Ap
 
 After all fixes, present summary (found/fixed/skipped/remaining). Ask: **Proceed to Phase 3?**
 
-**MANDATORY STOPPING POINT:** Wait for user confirmation.
+**⚠️ STOP:** Wait for user confirmation before proceeding to Phase 3.
 
 ---
 
@@ -182,7 +182,7 @@ Before deploying dbt projects, check whether source tables from `sources.yml` ex
 
 **IMPORTANT:** Use `CREATE TABLE IF NOT EXISTS` for new stubs, `CREATE OR REPLACE TABLE` for tables with wrong columns. Never use `ALTER TABLE ADD COLUMN`. See `references/snowflake-sql-patterns.md` for exact syntax.
 
-**MANDATORY STOPPING POINT:** Present the list of tables to create/seed and get approval before executing any CREATE or DROP statements.
+**⚠️ STOP:** Present the list of tables to create/seed and get approval before executing any CREATE or DROP statements.
 
 ### Step 3.2: Deploy dbt Projects
 
@@ -196,7 +196,7 @@ Track: `[DONE]` / `[FAIL]` / `[PENDING]` per project.
 
 For each package: read orchestration SQL, verify `EXECUTE DBT PROJECT` refs, present for review, execute.
 
-**MANDATORY STOPPING POINT:** Present deployment summary (etl_configuration, dbt projects, orchestration). Ask: **Proceed to Phase 4?**
+**⚠️ STOP:** Present deployment summary (etl_configuration, dbt projects, orchestration). Ask: **Proceed to Phase 4?**
 
 ---
 
@@ -281,6 +281,70 @@ This skill produces:
 | `Warehouse 'ETL_WH' does not exist` when running orchestration | `WAREHOUSE = ETL_WH` is hardcoded from the source environment | Change to your target warehouse (e.g. `COMPUTE_WH`). Run validator to detect with `ORCH_WAREHOUSE` category |
 | `Unsupported statement type 'SHOW PARAMETER'` when calling a procedure | `EXECUTE DBT PROJECT` cannot run inside SQL stored procedures (LANGUAGE SQL `BEGIN…END`) | Convert the PROCEDURE-based orchestration to a TASK-based DAG. Each `EXECUTE DBT PROJECT` becomes a child task with `AFTER` dependency. Run validator to detect with `PROC_EXECUTE_DBT` category |
 | `Can't parse '2024-01' as date` or `DATE_TRUNC does not support VARCHAR` | dbt model uses `'{{ var("x") }}'::DATE` but variable value is partial (e.g. `YYYY-MM`) | Replace `'{{ var("x") }}'::DATE` with `TO_DATE('{{ var("x") }}', 'YYYY-MM')`. Run validator to detect with `PARTIAL_DATE_CAST` category |
+
+---
+
+## Session Diary
+
+This skill maintains a lightweight diary to track deployment state across sessions, namespaced by Snowflake connection.
+
+### Directory Structure
+
+```
+~/.snowflake/cortex/memory/replatform/
+└── <connection_name>/
+    └── <database>.<schema>.md   # Per-deployment diary
+```
+
+### ✋ MANDATORY Initialization
+
+At the start of every session, before running any commands:
+
+1. **Get connection name** from user (or detect from active Snowflake CLI connection)
+2. **Check for existing diary** at `~/.snowflake/cortex/memory/replatform/<connection>/`
+   - If exists: Read to restore context (which packages deployed, fixes applied, current phase)
+   - If new: Create after Phase 1 completes
+
+### Diary Template
+
+```markdown
+# Replatform: <connection> / <database>.<schema>
+
+## Session: <timestamp>
+- **Phase reached**: 3 (Deploy)
+- **ETL output dir**: /path/to/Output/ETL/
+- **Inventory**: /path/to/replatform_inventory.json
+
+## Packages
+| Package | Orchestration | Status |
+|---------|--------------|--------|
+| DailyOrderLoad | TASK | DEPLOYED |
+| MonthlyReportGen | TASK | SMOKE_TESTED |
+
+## dbt Projects
+| Project | Package | Deploy Status | Smoke Test |
+|---------|---------|--------------|------------|
+| LoadCustomers | DailyOrderLoad | DONE | PASS |
+| LoadOrders | DailyOrderLoad | DONE | FAIL |
+
+## Fixes Applied
+- 5 PLACEHOLDER fixes in profiles.yml/sources.yml
+- 3 ORCH_SCHEMA_PREFIX fixes (ETL. → PUBLIC.)
+
+## Issues Remaining
+- LoadOrders: fct_daily_orders VARCHAR→DATE type mismatch
+
+## Notes
+- <observations, decisions, user preferences>
+```
+
+### When to Update
+
+- **After Phase 1**: Create diary with package/project inventory
+- **After Phase 2**: Record fixes applied and issues remaining
+- **After Phase 3**: Update deploy status per project
+- **After Phase 4**: Record smoke test results
+- **Session resume**: Read diary, present status summary, ask where to continue
 
 ---
 
