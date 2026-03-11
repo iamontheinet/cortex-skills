@@ -1,0 +1,46 @@
+# RSA keys and certificates
+*.p8
+*.pub
+*.pem
+*.key
+*.der
+
+# Credentials and filled-in profiles
+profile.json
+profile_staging.json
+credentials.json
+secrets.json
+*.secret
+
+# Environment variables
+.env
+.env.*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Java
+target/
+*.class
+*.jar
+dependency-reduced-pom.xml
+.idea/
+*.iml
+.mvn/wrapper/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Snowflake session state
+*.snowflake/

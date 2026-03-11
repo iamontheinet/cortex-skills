@@ -7,6 +7,30 @@ description: Validates, deploys, and operationalizes SnowConvert AI (SCAI) Repla
 
 After **SnowConvert AI Replatform** converts SSIS packages into dbt projects and Snowflake TASKs/procedures, this skill validates the output, deploys it to Snowflake, and runs smoke tests.
 
+## When to Use
+
+- User has SnowConvert AI Replatform output (the `Output/ETL/` folder) ready to deploy
+- User mentions SSIS-to-dbt migration, replatform output, or converted ETL packages
+- User needs to validate, fix, and deploy converted dbt projects to Snowflake
+- User wants to set up orchestration (TASKs/procedures) for deployed dbt projects
+- User needs to troubleshoot deployment issues with replatformed ETL
+
+## Tools Used
+
+- `bash` — Run scanner CLI (`uv run python -m replatform_scanner`), run `snow dbt deploy`
+- `snowflake_sql_execute` — Create databases/schemas/tables, deploy orchestration SQL, run smoke tests
+- `ask_user_question` — Present briefing, confirm fixes, get deployment approval at every phase gate
+- `read` / `write` / `edit` — Fix profiles.yml, sources.yml, orchestration SQL files
+
+## Stopping Points
+
+- ✋ Phase 0: User approves the workflow before any action
+- ✋ Phase 1: User reviews scan inventory before validation
+- ✋ Phase 2: User approves each fix; confirms all fixes before deployment
+- ✋ Phase 3.1.5: User approves source table creation (stubs/seeds)
+- ✋ Phase 3.3: User reviews deployment summary before smoke tests
+- ✋ Phase 4: User reviews smoke test results
+
 ---
 
 ## Rules
@@ -88,7 +112,7 @@ Phase 3: Deploy
 
 **Goal:** Explain what this skill does and get explicit user approval before executing anything.
 
-**✋ MANDATORY: This phase MUST be completed before ANY other action.** Do not run any commands, read any files, or execute any tools until the user approves.
+**⚠️ STOP:** This phase MUST be completed before ANY other action. Do not run any commands, read any files, or execute any tools until the user approves.
 
 **Load** `references/phase0-briefing.md` and present its content to the user using `ask_user_question`.
 
@@ -180,6 +204,10 @@ Set active context with `USE DATABASE` / `USE SCHEMA`.
 
 Deploy shared infrastructure objects first (tables, UDFs, procedures). For each SQL file: read, check schema refs, present for review, execute on approval.
 
+**If error occurs:**
+- `Object already exists` → safe to skip if user confirms existing object is correct
+- Schema reference error → check `etl_configuration/` SQL for hardcoded schema names; update to target schema
+
 ### Step 3.1.5: Create Source Tables
 
 Before deploying dbt projects, check whether source tables from `sources.yml` exist in the target. For missing tables, offer:
@@ -209,9 +237,19 @@ snow dbt deploy <PROJECT_NAME> \
 
 Track: `[DONE]` / `[FAIL]` / `[PENDING]` per project.
 
+**If error occurs:**
+- `Missing required fields` → profiles.yml needs all connection fields (see `PROFILES_OVERRIDE` fix pattern)
+- `source table not found` → go back to Step 3.1.5 to create stubs/seeds
+- `Project already exists` → use `--force` flag to overwrite
+
 ### Step 3.3: Deploy Orchestration SQL
 
 For each package: read orchestration SQL, verify `EXECUTE DBT PROJECT` refs, present for review, execute.
+
+**If error occurs:**
+- `Object 'X' does not exist` → hardcoded schema prefix; apply `ORCH_SCHEMA_PREFIX` fix
+- `Warehouse 'X' does not exist` → hardcoded warehouse; apply `ORCH_WAREHOUSE` fix
+- `Unsupported statement type 'SHOW PARAMETER'` → procedure-based orchestration; must convert to TASK DAG (see `PROC_EXECUTE_DBT`)
 
 **⚠️ STOP:** Present deployment summary (etl_configuration, dbt projects, orchestration). Ask: **Proceed to Phase 4?**
 
@@ -310,65 +348,15 @@ This skill produces:
 
 ## Session Diary
 
-This skill maintains a lightweight diary to track deployment state across sessions, namespaced by Snowflake connection.
+**⚠️ STOP:** At the start of every session, check for an existing diary before running any commands.
 
-### Directory Structure
+**Load** `references/session-diary.md` for the full diary format and template.
 
-```
-~/.snowflake/cortex/memory/replatform/
-└── <connection_name>/
-    └── <database>.<schema>.md   # Per-deployment diary
-```
-
-### ✋ MANDATORY Initialization
-
-At the start of every session, before running any commands:
-
-1. **Get connection name** from user (or detect from active Snowflake CLI connection)
-2. **Check for existing diary** at `~/.snowflake/cortex/memory/replatform/<connection>/`
-   - If exists: Read to restore context (which packages deployed, fixes applied, current phase)
-   - If new: Create after Phase 1 completes
-
-### Diary Template
-
-```markdown
-# Replatform: <connection> / <database>.<schema>
-
-## Session: <timestamp>
-- **Phase reached**: 3 (Deploy)
-- **ETL output dir**: /path/to/Output/ETL/
-- **Inventory**: /path/to/replatform_inventory.json
-
-## Packages
-| Package | Orchestration | Status |
-|---------|--------------|--------|
-| DailyOrderLoad | TASK | DEPLOYED |
-| MonthlyReportGen | TASK | SMOKE_TESTED |
-
-## dbt Projects
-| Project | Package | Deploy Status | Smoke Test |
-|---------|---------|--------------|------------|
-| LoadCustomers | DailyOrderLoad | DONE | PASS |
-| LoadOrders | DailyOrderLoad | DONE | FAIL |
-
-## Fixes Applied
-- 5 PLACEHOLDER fixes in profiles.yml/sources.yml
-- 3 ORCH_SCHEMA_PREFIX fixes (ETL. → PUBLIC.)
-
-## Issues Remaining
-- LoadOrders: fct_daily_orders VARCHAR→DATE type mismatch
-
-## Notes
-- <observations, decisions, user preferences>
-```
-
-### When to Update
-
-- **After Phase 1**: Create diary with package/project inventory
-- **After Phase 2**: Record fixes applied and issues remaining
-- **After Phase 3**: Update deploy status per project
-- **After Phase 4**: Record smoke test results
-- **Session resume**: Read diary, present status summary, ask where to continue
+**Quick reference:**
+- Diary location: `~/.snowflake/cortex/memory/replatform/<connection>/<database>.<schema>.md`
+- If diary exists: read it to restore context (phase reached, packages deployed, fixes applied)
+- If new deployment: create diary after Phase 1 completes
+- Update diary after each phase completes
 
 ---
 

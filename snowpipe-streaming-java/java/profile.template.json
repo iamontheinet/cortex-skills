@@ -1,0 +1,10 @@
+{
+  "user": "<YOUR_SNOWFLAKE_USER>",
+  "account": "<YOUR_ACCOUNT_IDENTIFIER>",
+  "url": "https://<YOUR_ACCOUNT_IDENTIFIER>.snowflakecomputing.com:443",
+  "role": "<YOUR_ROLE>",
+  "private_key_file": "<PATH_TO_YOUR_PRIVATE_KEY>.p8",
+  "database": "<YOUR_DATABASE>",
+  "schema": "<YOUR_SCHEMA>",
+  "warehouse": "<YOUR_WAREHOUSE>"
+}

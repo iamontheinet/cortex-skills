@@ -1,0 +1,10 @@
+{
+  "user": "<SNOWFLAKE_USER>",
+  "account": "<ORG>-<ACCOUNT>",
+  "url": "https://<ORG>-<ACCOUNT>.snowflakecomputing.com:443",
+  "role": "ACCOUNTADMIN",
+  "private_key_file": "streaming_key.p8",
+  "database": "SNOWPIPE_STREAMING_DEMO",
+  "schema": "STAGING",
+  "warehouse": "COMPUTE_WH"
+}
