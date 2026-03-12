@@ -20,7 +20,7 @@ Add this repo to your Cortex Code skills config at `~/.snowflake/cortex/skills.j
 {
   "remote": [
     {
-      "source": "https://github.com/iamontheinet/cortex-skills",
+      "source": "https://github.com/Snowflake-Labs/dash-cortex-skills",
       "ref": "main",
       "skills": [{ "name": "<skill-name>" }]
     }
@@ -33,7 +33,7 @@ Skills are cached locally and updated on next Cortex Code session.
 ### Option 2: Manual (local copy)
 
 ```bash
-git clone https://github.com/iamontheinet/cortex-skills.git /tmp/cortex-skills
+git clone https://github.com/Snowflake-Labs/dash-cortex-skills.git /tmp/cortex-skills
 
 # Copy the skill(s) you need
 cp -r /tmp/cortex-skills/<skill-name> ~/.snowflake/cortex/skills/<skill-name>

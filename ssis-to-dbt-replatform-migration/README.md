@@ -70,7 +70,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 {
   "remote": [
     {
-      "source": "https://github.com/iamontheinet/cortex-skills",
+      "source": "https://github.com/Snowflake-Labs/dash-cortex-skills",
       "ref": "main",
       "skills": [{ "name": "ssis-to-dbt-replatform-migration" }]
     }
@@ -81,7 +81,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 ### Option 2: Manual
 
 ```bash
-git clone https://github.com/iamontheinet/cortex-skills.git /tmp/cortex-skills
+git clone https://github.com/Snowflake-Labs/dash-cortex-skills.git /tmp/cortex-skills
 cp -r /tmp/cortex-skills/ssis-to-dbt-replatform-migration \
   ~/.snowflake/cortex/skills/ssis-to-dbt-replatform-migration
 ```
