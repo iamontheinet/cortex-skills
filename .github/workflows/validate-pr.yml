@@ -1,0 +1,51 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-skills:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed skill directories
+        id: detect
+        run: |
+          # Get unique top-level dirs that were touched
+          dirs=$(git diff --name-only origin/main...HEAD \
+            | grep '/' \
+            | cut -d'/' -f1 \
+            | sort -u \
+            | while read -r d; do
+                # Only include dirs that have or should have SKILL.md
+                if [[ -f "$d/SKILL.md" ]] || [[ -f "$d/README.md" ]]; then
+                  echo "$d"
+                fi
+              done)
+          echo "dirs=$dirs" >> "$GITHUB_OUTPUT"
+          if [[ -n "$dirs" ]]; then
+            echo "has_skills=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_skills=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate skill structure
+        if: steps.detect.outputs.has_skills == 'true'
+        run: |
+          readarray -t skill_dirs <<< "${{ steps.detect.outputs.dirs }}"
+          .github/scripts/validate-skill.sh "${skill_dirs[@]}"
+
+      - name: Check skills table is up to date
+        run: |
+          cp README.md README.md.bak
+          .github/scripts/generate-skills-table.sh
+          if ! diff -q README.md README.md.bak > /dev/null 2>&1; then
+            echo "WARNING: Skills table in README.md is out of date."
+            echo "It will be auto-updated when this PR merges to main."
+          fi
+          mv README.md.bak README.md

@@ -4,11 +4,13 @@ Community-contributed skills for AI coding agents. Each skill teaches an agent h
 
 ## Skills
 
+<!-- BEGIN_SKILLS_TABLE -->
 | Skill | What it does |
 |-------|-------------|
-| [ssis-to-dbt-replatform-migration](ssis-to-dbt-replatform-migration/) | Validate, deploy, and operationalize SnowConvert AI Replatform output — SSIS to dbt |
-| [snowpipe-streaming-python](snowpipe-streaming-python/) | Stream data into Snowflake using the Python Snowpipe Streaming SDK |
 | [snowpipe-streaming-java](snowpipe-streaming-java/) | Stream data into Snowflake using the Java Snowpipe Streaming SDK |
+| [snowpipe-streaming-python](snowpipe-streaming-python/) | Stream data into Snowflake using the Python Snowpipe Streaming SDK |
+| [ssis-to-dbt-replatform-migration](ssis-to-dbt-replatform-migration/) | Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations |
+<!-- END_SKILLS_TABLE -->
 
 ## Skill Structure
 
