@@ -1,26 +1,50 @@
-# Cortex Skills
+# Agent Skills
 
-A collection of [Cortex Code](https://docs.snowflake.com/en/user-guide/cortex-code/cortex-code) skills for Snowflake migrations, data engineering, and operations.
+Community-contributed skills for AI coding agents. Each skill teaches an agent how to handle a specific task — streaming data, migrating pipelines, deploying infrastructure, and more.
 
 ## Skills
 
-| Skill | Description |
+| Skill | What it does |
 |-------|-------------|
-| [ssis-to-dbt-replatform-migration](ssis-to-dbt-replatform-migration/) | Validate, deploy, and operationalize SnowConvert AI Replatform output — SSIS to dbt + Snowflake TASKs |
+| [ssis-to-dbt-replatform-migration](ssis-to-dbt-replatform-migration/) | Validate, deploy, and operationalize SnowConvert AI Replatform output — SSIS to dbt |
 | [snowpipe-streaming-python](snowpipe-streaming-python/) | Stream data into Snowflake using the Python Snowpipe Streaming SDK |
 | [snowpipe-streaming-java](snowpipe-streaming-java/) | Stream data into Snowflake using the Java Snowpipe Streaming SDK |
 
-## Installation
+## Skill Structure
 
-### Option 1: Remote (auto-synced)
+Each skill is a self-contained directory:
 
-Add this repo to your Cortex Code skills config at `~/.snowflake/cortex/skills.json`, listing the skills you want:
+```
+<skill-name>/
+├── SKILL.md          # Agent entry point — YAML metadata + instructions
+├── README.md         # Human-facing docs (prerequisites, usage, examples)
+├── scripts/          # Optional helper scripts the agent can execute
+├── references/       # Optional guides, schemas, or reference material
+└── src/              # Optional bundled source code
+```
+
+`SKILL.md` is what the agent reads. It starts with YAML frontmatter for discovery:
+
+```yaml
+---
+name: my-skill
+description: "Brief description. Triggers: keyword1, keyword2."
+---
+```
+
+The body contains step-by-step instructions, tool usage, and validation steps. Additional files (scripts, references, templates) are loaded on demand — only what's needed enters the agent's context.
+
+## Getting Started
+
+### Install via remote sync (recommended)
+
+Add skills to `~/.snowflake/cortex/skills.json`:
 
 ```json
 {
   "remote": [
     {
-      "source": "https://github.com/Snowflake-Labs/dash-cortex-code-skills",
+      "source": "https://github.com/Snowflake-Labs/agent-skills",
       "ref": "main",
       "skills": [{ "name": "<skill-name>" }]
     }
@@ -28,20 +52,18 @@ Add this repo to your Cortex Code skills config at `~/.snowflake/cortex/skills.j
 }
 ```
 
-Skills are cached locally and updated on next Cortex Code session.
+Skills auto-sync at session start.
 
-### Option 2: Manual (local copy)
+### Install manually
 
 ```bash
-git clone https://github.com/Snowflake-Labs/dash-cortex-code-skills.git /tmp/cortex-skills
-
-# Copy the skill(s) you need
-cp -r /tmp/cortex-skills/<skill-name> ~/.snowflake/cortex/skills/<skill-name>
+git clone https://github.com/Snowflake-Labs/agent-skills.git
+cp -r agent-skills/<skill-name> ~/.snowflake/cortex/skills/<skill-name>
 ```
 
 ### Verify
 
-In a Cortex Code session, run `/skill` to open the skill manager — installed skills should appear under **Global** or **Remote** skills. You can also invoke a skill directly:
+Run `/skill` in a session — installed skills appear under **Global** or **Remote**. Or invoke directly:
 
 ```
 $<skill-name>
@@ -49,7 +71,8 @@ $<skill-name>
 
 ## Prerequisites
 
-Each skill has its own requirements documented in its `SKILL.md`. Common prerequisites:
+Each skill documents its own requirements in `SKILL.md`. An AI coding agent that supports skills is all you need to get started.
 
-- **Cortex Code** CLI installed and configured
-- **Snowflake account** with appropriate permissions
+## Contributing
+
+Want to add a skill? Each skill is a self-contained directory with a `SKILL.md` that defines triggers, instructions, and validation steps. See any existing skill for the pattern. PRs welcome.
