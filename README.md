@@ -44,10 +44,10 @@ The body contains step-by-step instructions, tool usage, and validation steps. A
 Clone the repo and copy any skill into your project or agent's skill directory:
 
 ```bash
-git clone https://github.com/Snowflake-Labs/agent-skills.git
+git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git
 
 # Copy a skill into your project
-cp -r agent-skills/docker-dev-setup ./my-project/.agent-skills/docker-dev-setup
+cp -r snowflake-ai-kit/docker-dev-setup ./my-project/.agent-skills/docker-dev-setup
 ```
 
 These skills are **agent-agnostic** — they work with any AI coding agent that can read files. Each skill is just markdown + code templates, no proprietary format.
@@ -57,7 +57,7 @@ These skills are **agent-agnostic** — they work with any AI coding agent that 
 Add a skill's `SKILL.md` as a [project rule](https://docs.cursor.com/context/rules) (`.mdc` format):
 
 ```bash
-cp agent-skills/docker-dev-setup/SKILL.md .cursor/rules/docker-dev-setup.mdc
+cp snowflake-ai-kit/docker-dev-setup/SKILL.md .cursor/rules/docker-dev-setup.mdc
 ```
 
 ### Windsurf
@@ -65,7 +65,7 @@ cp agent-skills/docker-dev-setup/SKILL.md .cursor/rules/docker-dev-setup.mdc
 Add to Windsurf's [rules directory](https://docs.windsurf.com/windsurf/cascade/memories):
 
 ```bash
-cp agent-skills/docker-dev-setup/SKILL.md .windsurf/rules/docker-dev-setup.md
+cp snowflake-ai-kit/docker-dev-setup/SKILL.md .windsurf/rules/docker-dev-setup.md
 ```
 
 ### Claude Code
@@ -73,7 +73,7 @@ cp agent-skills/docker-dev-setup/SKILL.md .windsurf/rules/docker-dev-setup.md
 Add as a [project rule](https://code.claude.com/docs/en/memory):
 
 ```bash
-cp agent-skills/docker-dev-setup/SKILL.md .claude/rules/docker-dev-setup.md
+cp snowflake-ai-kit/docker-dev-setup/SKILL.md .claude/rules/docker-dev-setup.md
 ```
 
 ### Other Agents (Cline, Aider, etc.)
@@ -88,7 +88,7 @@ Add skills to `~/.snowflake/cortex/skills.json` for auto-sync:
 {
   "remote": [
     {
-      "source": "https://github.com/Snowflake-Labs/agent-skills",
+      "source": "https://github.com/Snowflake-Labs/snowflake-ai-kit",
       "ref": "main",
       "skills": [
         { "name": "docker-dev-setup" },

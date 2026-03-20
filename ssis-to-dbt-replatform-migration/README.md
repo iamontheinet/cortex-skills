@@ -70,7 +70,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 {
   "remote": [
     {
-      "source": "https://github.com/Snowflake-Labs/agent-skills",
+      "source": "https://github.com/Snowflake-Labs/snowflake-ai-kit",
       "ref": "main",
       "skills": [{ "name": "ssis-to-dbt-replatform-migration" }]
     }
@@ -81,8 +81,8 @@ Add to `~/.snowflake/cortex/skills.json`:
 ### Option 2: Manual
 
 ```bash
-git clone https://github.com/Snowflake-Labs/agent-skills.git agent-skills
-cp -r agent-skills/ssis-to-dbt-replatform-migration \
+git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git snowflake-ai-kit
+cp -r snowflake-ai-kit/ssis-to-dbt-replatform-migration \
   ~/.snowflake/cortex/skills/ssis-to-dbt-replatform-migration
 ```
 

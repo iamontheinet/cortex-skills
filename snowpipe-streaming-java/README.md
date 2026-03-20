@@ -48,7 +48,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 {
   "remote": [
     {
-      "source": "https://github.com/Snowflake-Labs/agent-skills",
+      "source": "https://github.com/Snowflake-Labs/snowflake-ai-kit",
       "ref": "main",
       "skills": [{ "name": "snowpipe-streaming-java" }]
     }
@@ -59,8 +59,8 @@ Add to `~/.snowflake/cortex/skills.json`:
 ### Option 2: Manual
 
 ```bash
-git clone https://github.com/Snowflake-Labs/agent-skills.git agent-skills
-cp -r agent-skills/snowpipe-streaming-java \
+git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git snowflake-ai-kit
+cp -r snowflake-ai-kit/snowpipe-streaming-java \
   ~/.snowflake/cortex/skills/snowpipe-streaming-java
 ```
 
