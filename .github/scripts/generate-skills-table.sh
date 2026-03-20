@@ -16,8 +16,12 @@ END_MARKER="<!-- END_SKILLS_TABLE -->"
 # ---------- collect rows from SKILL.md frontmatter ----------
 
 rows=""
-for skill_file in */SKILL.md; do
+for skill_file in snowflake-skills/*/SKILL.md; do
   dir="$(dirname "$skill_file")"
+
+  # Skip TEMPLATE directory
+  [[ "$(basename "$dir")" == "TEMPLATE" ]] && continue
+
   name="" desc=""
 
   # Parse YAML frontmatter (between --- lines)

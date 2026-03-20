@@ -58,7 +58,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 
 ```bash
 git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git snowflake-ai-kit
-cp -r snowflake-ai-kit/snowpipe-streaming-python \
+cp -r snowflake-ai-kit/snowflake-skills/snowpipe-streaming-python \
   ~/.snowflake/cortex/skills/snowpipe-streaming-python
 ```
 

@@ -1,88 +1,79 @@
-# Agent Skills
+# Snowflake AI Kit
 
-Community-contributed skills for AI coding agents. Each skill teaches an agent how to handle a specific task — streaming data, migrating pipelines, deploying infrastructure, and more.
+Skills and tools for AI coding agents working with Snowflake. Give your agent (Cortex Code, Cursor, Windsurf, Claude Code, etc.) the patterns and best practices it needs to build on Snowflake correctly.
 
-## Skills
-
-<!-- BEGIN_SKILLS_TABLE -->
-| Skill | What it does |
-|-------|-------------|
-| [docker-dev-setup](docker-dev-setup/) | Containerize an application with a production-grade Dockerfile, Docker Compose for local development, and optional Dev Container configuration |
-| [drizzle-orm-setup](drizzle-orm-setup/) | Scaffold a Drizzle ORM project with TypeScript schema, relations, database client, and migrations |
-| [supabase-auth-rls](supabase-auth-rls/) | Scaffold a Supabase project with database schema, Row Level Security policies, and auth integration |
-| [snowpipe-streaming-java](snowpipe-streaming-java/) | Stream data into Snowflake using the Java Snowpipe Streaming SDK |
-| [snowpipe-streaming-python](snowpipe-streaming-python/) | Stream data into Snowflake using the Python Snowpipe Streaming SDK |
-| [ssis-to-dbt-replatform-migration](ssis-to-dbt-replatform-migration/) | Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations |
-<!-- END_SKILLS_TABLE -->
-
-## Skill Structure
-
-Each skill is a self-contained directory:
-
-```
-<skill-name>/
-├── SKILL.md          # Agent entry point — YAML metadata + instructions
-├── README.md         # Human-facing docs (prerequisites, usage, examples)
-├── scripts/          # Optional helper scripts the agent can execute
-├── references/       # Optional guides, schemas, or reference material
-└── src/              # Optional bundled source code
-```
-
-`SKILL.md` is what the agent reads. It starts with YAML frontmatter for discovery:
-
-```yaml
 ---
-name: my-skill
-description: "Brief description. Triggers: keyword1, keyword2."
+
+## What Can I Build?
+
+- **Docker Dev Environments** — Dockerfiles, Compose, Dev Containers for any stack
+- **ORM Scaffolding** — Drizzle ORM with TypeScript schemas, migrations, and queries
+- **Auth & Row-Level Security** — Supabase projects with RLS policies and auth integration
+- **Streaming Pipelines** — Snowpipe Streaming in Java or Python with exactly-once delivery
+- **ETL Migrations** — SSIS-to-dbt replatforming on Snowflake
+- ...and more as the community contributes
+
 ---
+
+## Quick Start
+
+### One-line install (Mac / Linux)
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/Snowflake-Labs/snowflake-ai-kit/main/snowflake-skills/install_skills.sh)
 ```
 
-The body contains step-by-step instructions, tool usage, and validation steps. Additional files (scripts, references, templates) are loaded on demand — only what's needed enters the agent's context.
+This auto-detects your agent (Cursor, Windsurf, Claude Code) and installs all skills.
 
-## Getting Started
+<details>
+<summary><strong>Advanced options</strong></summary>
 
-Clone the repo and copy any skill into your project or agent's skill directory:
+```bash
+# Install for a specific agent
+bash <(curl -sSL .../snowflake-skills/install_skills.sh) --agent cursor
+
+# Install specific skills only
+bash <(curl -sSL .../snowflake-skills/install_skills.sh) docker-dev-setup drizzle-orm-setup
+
+# List available skills
+bash <(curl -sSL .../snowflake-skills/install_skills.sh) --list
+```
+
+</details>
+
+### Manual install
+
+Clone the repo and copy skills into your agent's rules directory:
 
 ```bash
 git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git
-
-# Copy a skill into your project
-cp -r snowflake-ai-kit/docker-dev-setup ./my-project/.agent-skills/docker-dev-setup
 ```
 
-These skills are **agent-agnostic** — they work with any AI coding agent that can read files. Each skill is just markdown + code templates, no proprietary format.
-
-### Cursor
-
-Add a skill's `SKILL.md` as a [project rule](https://docs.cursor.com/context/rules) (`.mdc` format):
+#### Cursor
 
 ```bash
-cp snowflake-ai-kit/docker-dev-setup/SKILL.md .cursor/rules/docker-dev-setup.mdc
+cp snowflake-ai-kit/snowflake-skills/docker-dev-setup/SKILL.md .cursor/rules/docker-dev-setup.mdc
 ```
 
-### Windsurf
-
-Add to Windsurf's [rules directory](https://docs.windsurf.com/windsurf/cascade/memories):
+#### Windsurf
 
 ```bash
-cp snowflake-ai-kit/docker-dev-setup/SKILL.md .windsurf/rules/docker-dev-setup.md
+cp snowflake-ai-kit/snowflake-skills/docker-dev-setup/SKILL.md .windsurf/rules/docker-dev-setup.md
 ```
 
-### Claude Code
-
-Add as a [project rule](https://code.claude.com/docs/en/memory):
+#### Claude Code
 
 ```bash
-cp snowflake-ai-kit/docker-dev-setup/SKILL.md .claude/rules/docker-dev-setup.md
+cp snowflake-ai-kit/snowflake-skills/docker-dev-setup/SKILL.md .claude/rules/docker-dev-setup.md
 ```
 
-### Other Agents (Cline, Aider, etc.)
+#### Other Agents (Cline, Aider, etc.)
 
-Point the agent at the `SKILL.md` file directly, or paste its contents into the agent's system prompt / context window. The `references/` and `templates/` directories provide additional material the agent can load as needed.
+Point the agent at the `SKILL.md` file directly, or paste its contents into the agent's system prompt.
 
-### Cortex Code
+#### Cortex Code
 
-Add skills to `~/.snowflake/cortex/skills.json` for auto-sync:
+Add to `~/.snowflake/cortex/skills.json`:
 
 ```json
 {
@@ -100,12 +91,49 @@ Add skills to `~/.snowflake/cortex/skills.json` for auto-sync:
 }
 ```
 
-Run `/skill` in a session to confirm installation, or invoke directly with `$docker-dev-setup`.
+---
 
-## Prerequisites
+## What's Included
 
-Each skill documents its own requirements in `SKILL.md`. An AI coding agent that supports skills is all you need to get started.
+| Component | Description |
+|-----------|-------------|
+| [`snowflake-skills/`](snowflake-skills/) | Markdown skills teaching Snowflake and development patterns |
+
+---
+
+## Skills
+
+<!-- BEGIN_SKILLS_TABLE -->
+| Skill | What it does |
+|-------|-------------|
+| [docker-dev-setup](snowflake-skills/docker-dev-setup/) | Containerize an application with a production-grade Dockerfile, Docker Compose for local development, and optional Dev Container configuration |
+| [drizzle-orm-setup](snowflake-skills/drizzle-orm-setup/) | Scaffold a Drizzle ORM project with TypeScript schema, relations, database client, and migrations |
+| [snowpipe-streaming-java](snowflake-skills/snowpipe-streaming-java/) | Stream data into Snowflake using the Java Snowpipe Streaming SDK |
+| [snowpipe-streaming-python](snowflake-skills/snowpipe-streaming-python/) | Stream data into Snowflake using the Python Snowpipe Streaming SDK |
+| [ssis-to-dbt-replatform-migration](snowflake-skills/ssis-to-dbt-replatform-migration/) | Validates, deploys, and operationalizes SnowConvert AI (SCAI) Replatform output — SSIS to dbt and Snowflake TASKs migrations |
+| [supabase-auth-rls](snowflake-skills/supabase-auth-rls/) | Scaffold a Supabase project with database schema, Row Level Security policies, and auth integration |
+<!-- END_SKILLS_TABLE -->
+
+See [`snowflake-skills/`](snowflake-skills/) for detailed descriptions, categories, and installation options.
+
+---
+
+## Star History
+
+<a href="https://star-history.com/#Snowflake-Labs/snowflake-ai-kit&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date" />
+ </picture>
+</a>
+
+---
 
 ## Contributing
 
-Want to add a skill? Each skill is a self-contained directory with a `SKILL.md` that defines triggers, instructions, and validation steps. See any existing skill for the pattern. PRs welcome.
+Want to add a skill? See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, or use the [TEMPLATE](snowflake-skills/TEMPLATE/) to get started.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) for details.

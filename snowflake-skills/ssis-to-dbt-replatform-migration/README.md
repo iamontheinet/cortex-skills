@@ -82,7 +82,7 @@ Add to `~/.snowflake/cortex/skills.json`:
 
 ```bash
 git clone https://github.com/Snowflake-Labs/snowflake-ai-kit.git snowflake-ai-kit
-cp -r snowflake-ai-kit/ssis-to-dbt-replatform-migration \
+cp -r snowflake-ai-kit/snowflake-skills/ssis-to-dbt-replatform-migration \
   ~/.snowflake/cortex/skills/ssis-to-dbt-replatform-migration
 ```
 

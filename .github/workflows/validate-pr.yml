@@ -16,10 +16,10 @@ jobs:
       - name: Detect changed skill directories
         id: detect
         run: |
-          # Get unique top-level dirs that were touched
+          # Get unique skill dirs under snowflake-skills/ that were touched
           dirs=$(git diff --name-only origin/main...HEAD \
-            | grep '/' \
-            | cut -d'/' -f1 \
+            | grep '^snowflake-skills/' \
+            | cut -d'/' -f1-2 \
             | sort -u \
             | while read -r d; do
                 # Only include dirs that have or should have SKILL.md
