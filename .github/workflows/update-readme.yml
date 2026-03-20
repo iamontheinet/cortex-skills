@@ -6,6 +6,7 @@ on:
     paths:
       - 'snowflake-skills/*/SKILL.md'
       - '.github/scripts/generate-skills-table.sh'
+      - '.github/scripts/sync-agent-rules.sh'
 
 jobs:
   update-readme:
@@ -19,11 +20,14 @@ jobs:
       - name: Generate skills table
         run: .github/scripts/generate-skills-table.sh
 
+      - name: Sync agent rules
+        run: .github/scripts/sync-agent-rules.sh
+
       - name: Commit if changed
         run: |
-          git diff --quiet README.md && exit 0
+          git diff --quiet && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "Update skills table [skip ci]"
+          git add README.md .cursor/rules/ .windsurf/rules/ .claude/rules/
+          git commit -m "Sync skills table and agent rules [skip ci]"
           git push

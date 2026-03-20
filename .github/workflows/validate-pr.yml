@@ -49,3 +49,12 @@ jobs:
             echo "It will be auto-updated when this PR merges to main."
           fi
           mv README.md.bak README.md
+
+      - name: Check agent rules are in sync
+        run: |
+          .github/scripts/sync-agent-rules.sh
+          if ! git diff --quiet .cursor/rules/ .windsurf/rules/ .claude/rules/; then
+            echo "WARNING: Agent rule files are out of sync with SKILL.md sources."
+            echo "They will be auto-synced when this PR merges to main."
+          fi
+          git checkout -- .cursor/rules/ .windsurf/rules/ .claude/rules/ 2>/dev/null || true
