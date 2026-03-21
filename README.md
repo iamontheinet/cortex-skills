@@ -118,18 +118,6 @@ Add to `~/.snowflake/cortex/skills.json`:
 
 ---
 
-## Star History
-
-<a href="https://star-history.com/#Snowflake-Labs/snowflake-ai-kit&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Snowflake-Labs/snowflake-ai-kit&type=Date" />
- </picture>
-</a>
-
----
-
 ## Contributing
 
 Want to add a skill? See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, or use the [TEMPLATE](snowflake-skills/TEMPLATE/) to get started.
